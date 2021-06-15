@@ -3,5 +3,46 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "carey-validation": {
+      "projectType": "library",
+      "root": "projects/carey-validation",
+      "sourceRoot": "projects/carey-validation/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/carey-validation/tsconfig.lib.json",
+            "project": "projects/carey-validation/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/carey-validation/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/carey-validation/src/test.ts",
+            "tsConfig": "projects/carey-validation/tsconfig.spec.json",
+            "karmaConfig": "projects/carey-validation/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/carey-validation/tsconfig.lib.json",
+              "projects/carey-validation/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "carey-validation"
 }
