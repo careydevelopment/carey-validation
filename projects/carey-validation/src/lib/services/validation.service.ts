@@ -17,27 +17,6 @@ export class ValidationService implements OnDestroy {
     return this.errorSubject.asObservable();
   }
 
-  triggerError(formField: AbstractControl, formFieldName: string) {
-    const formControlErrors: ValidationErrors = formField.errors;
-    console.log(formControlErrors);
-
-    if (formControlErrors) {
-      const keys = Object.keys(formControlErrors);
-
-      if (keys && keys.length > 0) {
-        let key: string = keys[0];
-        console.log(key);
-
-        let fieldError: FieldError = {} as FieldError;
-        fieldError.fieldName = formFieldName;
-        fieldError.key = key;
-        fieldError.message = this.errorKeyMessagesService.getMessageByKey(key);
-
-        this.errorSubject.next(fieldError);
-      }
-    }
-  }
-
   ngOnDestroy(): void {
     this.errorSubject.complete();
   }

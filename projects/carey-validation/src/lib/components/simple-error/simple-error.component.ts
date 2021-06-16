@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FieldError } from '../../models/field-error';
 import { ValidationService } from '../../services/validation.service';
 
@@ -12,14 +12,14 @@ export class SimpleErrorComponent implements OnInit {
 
   @Input() fieldName: string;
 
-  @HostBinding('style.display') display: string;
+  @ViewChild('simpleError') simpleErrorElement: ElementRef;
 
   message: string;
 
   constructor(private validationService: ValidationService) { }
 
   ngOnInit(): void {
-    console.log(this.fieldName);
+    console.log(this.simpleErrorElement);
 
     this.validationService.getErrorObservable().subscribe(
       (fieldError: FieldError) => {
@@ -31,7 +31,7 @@ export class SimpleErrorComponent implements OnInit {
 
   triggerError(fieldError: FieldError) {
     this.message = fieldError.message;
-    this.display = 'inline';
+    this.simpleErrorElement.nativeElement.style.display = 'inline';
 
     console.log(this.message);
   }
