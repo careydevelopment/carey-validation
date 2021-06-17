@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormControl, ValidationErrors } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ErrorKeyMessagesService } from '../services/error-key-messages.service';
 
@@ -8,47 +8,49 @@ import { ErrorKeyMessagesService } from '../services/error-key-messages.service'
 })
 export class SimpleValidationDirective implements OnInit {
 
-  @Input('simpleValidation') formField: AbstractControl;
+  @Input('simpleValidation') formField: FormControl;
   @Input('fieldLabel') fieldLabel: string;
 
   currentlyValid: boolean = true; 
-  currentResult: string;
 
   constructor(private errorKeyMessagesService: ErrorKeyMessagesService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
-    console.log("In init");
     this.setUpStyling();
-    this.trackFieldChanges();
+    this.trackTouchChanges();
+    this.trackStatusChanges();
   }
 
-  private trackFieldChanges() {
-    console.log("Tracking ", this.formField);
-    console.log("Field name is " + this.fieldLabel);
-
+  private trackTouchChanges() {
     let self = this;
     let originalMethod = this.formField.markAsTouched;
+
     this.formField.markAsTouched = function () {
       originalMethod.apply(this, arguments);
-      console.log("I touched " + self.fieldLabel); 
-    }
 
-    this.formField.valueChanges.pipe(
+      //if we get here, the user just tabbed through
+      //the field without making any changes, so valueChanges
+      //didn't trigger but we still need to validate
+      self.checkValidity();
+    }
+  }
+
+  private trackStatusChanges() {
+    this.formField.statusChanges.pipe(
       debounceTime(500),
       distinctUntilChanged()
-    ).subscribe(
-      result => {
-        console.log(result);
+    ).subscribe(result => this.checkValidity(result));
+  }
 
-        if (this.formField.invalid) {
-          console.log("field " + this.fieldLabel + " is invalid ");
-          this.triggerError();
-        } else {
-          this.triggerValid();
-        }
-      }
-    )
+  private checkValidity(result?: string) {
+    let resultCheck: string = result ? result : this.formField.status;
+
+    if (resultCheck === 'INVALID') {
+      this.triggerError();
+    } else {
+      this.triggerValid();
+    }
   }
 
   private setUpStyling() {
@@ -68,17 +70,11 @@ export class SimpleValidationDirective implements OnInit {
       this.currentlyValid = false;
       const formControlErrors: ValidationErrors = this.formField.errors;
 
-      console.log(formControlErrors);
-
       if (formControlErrors) {
         const keys = Object.keys(formControlErrors);
 
-        console.log(keys);
-
         if (keys && keys.length > 0) {
           let key: string = keys[0];
-          console.log(key);
-
           let message: string = this.errorKeyMessagesService.getMessageByKey(key, this.fieldLabel);
 
           if (message) {
