@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ErrorKeyMessagesService } from '../services/error-key-messages.service';
 
@@ -11,12 +11,13 @@ export class SimpleValidationDirective implements OnInit {
   @Input('simpleValidation') formField: FormControl;
   @Input('fieldLabel') fieldLabel: string;
 
-  currentlyValid: boolean = true; 
+  currentlyValid: boolean = true;
+  formGroup: FormGroup;
 
   constructor(private errorKeyMessagesService: ErrorKeyMessagesService,
     private elementRef: ElementRef) { }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.setUpStyling();
     this.trackTouchChanges();
     this.trackStatusChanges();
