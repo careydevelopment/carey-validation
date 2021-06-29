@@ -30,7 +30,7 @@ If you want to display a summary of error messages use the `<error-spree>` eleme
 
 In the code above, `errorMessages` is an array of strings representing all errors on the entire form.
 
-You can get all errors with the help of the `ValidationService` class provided in this library. For example:
+You can get all errors with the help of the `ValidationService` class provided in this library. For example:<br/>
 `let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;`<br/>
 `let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);`
 
@@ -46,7 +46,7 @@ As it stands now, the library will provide default messages for fields with the 
 If you want to provide messages for other fields, you can add them as an array in the `fieldSummaries`
 property of the configuration object.
 
-An example:
+An example:<br/>
 `export const allFieldSummaries: ErrorFieldMessage[] = [
   {
     field: "source",
@@ -62,6 +62,6 @@ An example:
   }
 ];`
 
-Then just specify that array when importing the module as follows:
+Then just specify that array when importing the module as follows:<br/>
 `ValidationModule.forRoot({ fieldSummaries : allFieldSummaries })`
 
