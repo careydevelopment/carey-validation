@@ -1,8 +1,39 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ErrorKeyMessagesService } from '../services/error-key-messages.service';
+import { ValidationService } from '../services/validation.service';
 
+/**
+ * This directive displays a message in the template if a form field is
+ * invalid.
+ *
+ * Note that the validation logic (as of now) must be included in the component
+ * using this directive.
+ *
+ * For example:
+ * this.basicInfoFormGroup = this.fb.group({
+ *     'firstName': [this.contact.firstName,
+ *                    [Validators.required,
+ *                      Validators.pattern('^[a-zA-Z. \-\]*$')
+ *                    ]
+ *                  ]
+ * });
+ *
+ * That validation logic is still required in the component class.
+ *
+ * Here's how this directive is used:
+ * <mat-error
+ *    fieldLabel="First name"
+ *    [simpleValidation]="basicInfoFormGroup.get('firstName')">
+ * </mat-error>
+ *
+ * The simpleValidation directive requires a FormControl object. In the example above,
+ * it's retrieved from the FormGroup.
+ *
+ * The fieldLabel property is optional. But it enables the directive to display a
+ * field-specific error message. For example: "First name is required" instead of
+ * "This field is required."
+ **/
 @Directive({
   selector: '[simpleValidation]'
 })
@@ -14,7 +45,7 @@ export class SimpleValidationDirective implements OnInit {
   currentlyValid: boolean = true;
   formGroup: FormGroup;
 
-  constructor(private errorKeyMessagesService: ErrorKeyMessagesService,
+  constructor(private validationService: ValidationService,
     private elementRef: ElementRef) { }
 
   ngOnInit() { 
@@ -27,6 +58,8 @@ export class SimpleValidationDirective implements OnInit {
     let self = this;
     let originalMethod = this.formField.markAsTouched;
 
+    //going with a monkey patch here because there's no
+    //listener for touched
     this.formField.markAsTouched = function () {
       originalMethod.apply(this, arguments);
 
@@ -55,6 +88,8 @@ export class SimpleValidationDirective implements OnInit {
   }
 
   private setUpStyling() {
+    //default to no display of error message because
+    //we don't assume there's an error
     this.elementRef.nativeElement.style.display = 'none';
   }
 
@@ -75,8 +110,13 @@ export class SimpleValidationDirective implements OnInit {
         const keys = Object.keys(formControlErrors);
 
         if (keys && keys.length > 0) {
+          //just grab the first key for now
+          //but there may be multiple errors on the same field
           let key: string = keys[0];
-          let message: string = this.errorKeyMessagesService.getMessageByKey(key, this.fieldLabel);
+
+          //get the message associated with the key
+          //this will be something like "First name is required"
+          let message: string = this.validationService.getMessageByKey(key, this.fieldLabel);
 
           if (message) {
             this.elementRef.nativeElement.innerText = message;
