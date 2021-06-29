@@ -12,6 +12,17 @@ The library handles two types of error displays:
 
 As of now, the library only supports Angular Material forms. 
 
+The library includes just one project: carey-validation. I like to keep a 1:1 mapping between libraries and projects in
+source repos.
+
+## Installation
+Just go to your command prompt. At the root of your source tree, enter the following command:<br/>
+`npm i carey-validation`
+
+That will install the library.
+
+You need to specify configuration options as well. See below for more info on that.
+
 ## Usage: Individual Error Messages
 The easiest way to add error display to a form is with the `<mat-error>` element. For example:
 `<mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>`
