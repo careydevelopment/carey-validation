@@ -1,27 +1,67 @@
-# CareyValidation
+# carey-validation
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
+## Overview
+This library streamlines validation displays for Angular Material forms.
 
-## Development server
+The point is to reduce the amount of code developers need to add to display validation
+errors on forms.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The library handles two types of error displays:
+1. **Individual errors** - errors that typically appear next to or below the erroneous field.
+2. **Summary errors** - lists that summarize all errors on a form, usually displayed at the top or bottom of the form.
 
-## Code scaffolding
+As of now, the library only supports Angular Material forms. 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+##Usage: Individual Error Messages
+The easiest way to add error display to a form is with the `<mat-error>` element. For example:
+`<mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>`
 
-## Build
+The `fieldLabel` property is optional but helpful. If used, the error will appear with the field name.
+For example: "First name is required."
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+If you omit the `fieldLabel` property, users will see a generic error message: "This field is required."
 
-## Running unit tests
+The `simpleValidation` takes a form field as its input. It will validate that field according to the
+rules you specify in the component class. Yes, you must still specify the validation rules. 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+##Usage: Summary Error Messages
+If you want to display a summary of error messages use the `<error-spree>` element. For example:
+`<error-spree [errorMessages]="errorMessages"></error-spree>`
 
-## Running end-to-end tests
+In the code above, `errorMessages` is an array of strings representing all errors on the entire form.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+You can get all errors with the help of the `ValidationService` class provided in this library. For example:
+`let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;`
+`let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);`
 
-## Further help
+That will grab all the errors from that form.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+A caveat, though: you need to configure error messages for fields not covered by the library.
+
+As it stands now, the library will provide default messages for fields with the following names:
+- firstName
+- lastName
+- email
+
+If you want to provide messages for other fields, you can add them as an array in the `fieldSummaries`
+property of the configuration object.
+
+An example:
+`export const allFieldSummaries: ErrorFieldMessage[] = [
+  {
+    field: "source",
+    message: "Please enter a valid source"
+  },
+  {
+    field: "status",
+    message: "Please enter a valid status"
+  },
+  {
+    field: "account",
+    message: "Please enter a valid account"
+  }
+];`
+
+Then just specify that array when importing the module as follows:
+`ValidationModule.forRoot({ fieldSummaries : allFieldSummaries })`
+
