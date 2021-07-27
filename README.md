@@ -1,6 +1,6 @@
 ![Carey Development Logo](http://careydevelopment.us/img/branding/careydevelopment-logo-sm.png)
 
-# Carey Development Angular Validation 
+# Carey Development Validation for Angular Material Forms 
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg) 
 
@@ -11,11 +11,19 @@ This package streamlines validation displays for Angular Material forms.
 The point is to reduce the amount of code developers need to add to display validation
 errors on forms.
 
-The library handles two types of error displays:
+The code handles two types of error displays:
 1. **Individual errors** - errors that typically appear next to or below the erroneous field.
 2. **Summary errors** - lists that summarize all errors on a form, usually displayed at the top or bottom of the form.
 
-As of now, the library only supports Angular Material forms. 
+As of now, the package only supports Angular Material forms. 
+
+##Usage: Installation
+It's easy to install this package:
+```
+npm install carey-validation
+```
+
+Once you've installed it, you can begin using it as described below.
 
 ## Usage: Individual Error Messages
 The easiest way to add error display to a form is with the `<mat-error>` element. For example:
@@ -39,7 +47,7 @@ If you want to display a summary of error messages use the `<error-spree>` eleme
 
 In the code above, `errorMessages` is an array of strings representing all errors on the entire form.
 
-You can get all errors with the help of the `ValidationService` class provided in this library. For example:<br/>
+You can get all errors with the help of the `ValidationService` class provided in this package. For example:<br/>
 ```
 let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;
 let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);
@@ -47,9 +55,9 @@ let errorMessages: string[] = this.validationService.validateForm(basicInfoForm)
 
 That will grab all the errors from that form.
 
-A caveat, though: you need to configure error messages for fields not covered by the library.
+A caveat, though: you need to configure error messages for fields not covered by the package.
 
-As it stands now, the library will provide default messages for fields with the following names:
+As it stands now, the package will provide default messages for fields with the following names:
 - firstName
 - lastName
 - email
