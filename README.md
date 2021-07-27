@@ -17,7 +17,7 @@ The code handles two types of error displays:
 
 As of now, the package only supports Angular Material forms. 
 
-##Usage: Installation
+## Usage: Installation
 It's easy to install this package:
 ```
 npm install carey-validation
