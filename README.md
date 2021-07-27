@@ -19,7 +19,9 @@ As of now, the library only supports Angular Material forms.
 
 ## Usage: Individual Error Messages
 The easiest way to add error display to a form is with the `<mat-error>` element. For example:
-`<mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>`
+```
+<mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>
+```
 
 The `fieldLabel` property is optional but helpful. If used, the error will appear with the field name.
 For example: "First name is required."
@@ -31,13 +33,17 @@ rules you specify in the component class. Yes, you must still specify the valida
 
 ## Usage: Summary Error Messages
 If you want to display a summary of error messages use the `<error-spree>` element. For example:
-`<error-spree [errorMessages]="errorMessages"></error-spree>`
+```
+<error-spree [errorMessages]="errorMessages"></error-spree>
+```
 
 In the code above, `errorMessages` is an array of strings representing all errors on the entire form.
 
 You can get all errors with the help of the `ValidationService` class provided in this library. For example:<br/>
-`let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;`<br/>
-`let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);`
+```
+let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;
+let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);
+```
 
 That will grab all the errors from that form.
 
@@ -52,7 +58,8 @@ If you want to provide messages for other fields, you can add them as an array i
 property of the configuration object.
 
 An example:<br/>
-`export const allFieldSummaries: ErrorFieldMessage[] = [
+```
+export const allFieldSummaries: ErrorFieldMessage[] = [
   {
     field: "source",
     message: "Please enter a valid source"
@@ -65,7 +72,8 @@ An example:<br/>
     field: "account",
     message: "Please enter a valid account"
   }
-];`
+];
+```
 
 Then just specify that array when importing the module as follows:<br/>
 `ValidationModule.forRoot({ fieldSummaries : allFieldSummaries })`
