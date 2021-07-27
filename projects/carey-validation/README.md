@@ -1,7 +1,11 @@
-# carey-validation
+![Carey Development Logo](http://careydevelopment.us/img/branding/careydevelopment-logo-sm.png)
+
+# Carey Development Angular Validation 
+
+![license](https://img.shields.io/badge/license-MIT-blue.svg) 
 
 ## Overview
-This library streamlines validation displays for Angular Material forms.
+This package streamlines validation displays for Angular Material forms.
 
 The point is to reduce the amount of code developers need to add to display validation
 errors on forms.
