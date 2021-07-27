@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\projects",
+    "\\projects\\carey-validation",
+    "\\projects\\carey-validation\\src",
+    "\\projects\\carey-validation\\src\\lib",
+    "\\projects\\carey-validation\\src\\lib\\components",
+    "\\projects\\carey-validation\\src\\lib\\components\\server-side-error-spree",
+    "\\projects\\carey-validation\\src\\lib\\constants",
+    "\\projects\\carey-validation\\src\\lib\\models",
+    "\\projects\\carey-validation\\src\\lib\\services"
+  ],
+  "SelectedNode": "\\projects\\carey-validation\\src\\public-api.ts",
+  "PreviewInSolutionExplorer": false
+}
