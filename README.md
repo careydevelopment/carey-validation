@@ -1,31 +1,35 @@
-# carey-validation
+![Carey Development Logo](http://careydevelopment.us/img/branding/careydevelopment-logo-sm.png)
+
+# Carey Development Validation for Angular Material Forms 
+
+![license](https://img.shields.io/badge/license-MIT-blue.svg) 
+
 
 ## Overview
-This library streamlines validation displays for Angular Material forms.
+This package streamlines validation displays for Angular Material forms.
 
 The point is to reduce the amount of code developers need to add to display validation
 errors on forms.
 
-The library handles two types of error displays:
+The code handles two types of error displays:
 1. **Individual errors** - errors that typically appear next to or below the erroneous field.
 2. **Summary errors** - lists that summarize all errors on a form, usually displayed at the top or bottom of the form.
 
-As of now, the library only supports Angular Material forms. 
+As of now, the package only supports Angular Material forms. 
 
-The library includes just one project: carey-validation. I like to keep a 1:1 mapping between libraries and projects in
-source repos.
+##Usage: Installation
+It's easy to install this package:
+```
+npm install carey-validation
+```
 
-## Installation
-Just go to your command prompt. At the root of your source tree, enter the following command:<br/>
-`npm i carey-validation`
-
-That will install the library.
-
-You need to specify configuration options as well. See below for more info on that.
+Once you've installed it, you can begin using it as described below.
 
 ## Usage: Individual Error Messages
 The easiest way to add error display to a form is with the `<mat-error>` element. For example:
-`<mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>`
+```
+<mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>
+```
 
 The `fieldLabel` property is optional but helpful. If used, the error will appear with the field name.
 For example: "First name is required."
@@ -37,19 +41,23 @@ rules you specify in the component class. Yes, you must still specify the valida
 
 ## Usage: Summary Error Messages
 If you want to display a summary of error messages use the `<error-spree>` element. For example:
-`<error-spree [errorMessages]="errorMessages"></error-spree>`
+```
+<error-spree [errorMessages]="errorMessages"></error-spree>
+```
 
 In the code above, `errorMessages` is an array of strings representing all errors on the entire form.
 
-You can get all errors with the help of the `ValidationService` class provided in this library. For example:<br/>
-`let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;`<br/>
-`let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);`
+You can get all errors with the help of the `ValidationService` class provided in this package. For example:<br/>
+```
+let basicInfoForm: FormGroup = basicInfoComponent.basicInfoFormGroup;
+let errorMessages: string[] = this.validationService.validateForm(basicInfoForm);
+```
 
 That will grab all the errors from that form.
 
-A caveat, though: you need to configure error messages for fields not covered by the library.
+A caveat, though: you need to configure error messages for fields not covered by the package.
 
-As it stands now, the library will provide default messages for fields with the following names:
+As it stands now, the package will provide default messages for fields with the following names:
 - firstName
 - lastName
 - email
@@ -58,7 +66,8 @@ If you want to provide messages for other fields, you can add them as an array i
 property of the configuration object.
 
 An example:<br/>
-`export const allFieldSummaries: ErrorFieldMessage[] = [
+```
+export const allFieldSummaries: ErrorFieldMessage[] = [
   {
     field: "source",
     message: "Please enter a valid source"
@@ -71,7 +80,8 @@ An example:<br/>
     field: "account",
     message: "Please enter a valid account"
   }
-];`
+];
+```
 
 Then just specify that array when importing the module as follows:<br/>
 `ValidationModule.forRoot({ fieldSummaries : allFieldSummaries })`
